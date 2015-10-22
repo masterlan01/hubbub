@@ -38,8 +38,10 @@
       <column name="photo" sqlType="MEDIUMBLOB" precision="16777215" scale="0" nullable="true" jdbcType="-4"/>
       <column name="timezone" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <column name="user_id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="skin" sqlType="VARCHAR" precision="9" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="id"/>
       <foreign-key name="FK_c1dkiawnlj6uoe6fnlwd6j83j" columns="user_id" ref-table="user" ref-schema="" ref-catalog="Hubbub" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="FK_1mcjtpxmwom9h9bf2q0k412e0" table="user" schema="" catalog="Hubbub" columns="profile_id"/>
       <index name="UK_c1dkiawnlj6uoe6fnlwd6j83j" unique="true" columns="user_id"/>
     </table>
     <table name="tag" schema="" catalog="Hubbub" type="TABLE">
@@ -58,13 +60,17 @@
       <column name="date_created" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <column name="login_id" sqlType="VARCHAR" precision="20" scale="0" nullable="false" jdbcType="12"/>
       <column name="password" sqlType="VARCHAR" precision="8" scale="0" nullable="false" jdbcType="12"/>
+      <column name="profile_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="user_id" sqlType="VARCHAR" precision="20" scale="0" nullable="false" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FK_1mcjtpxmwom9h9bf2q0k412e0" columns="profile_id" ref-table="profile" ref-schema="" ref-catalog="Hubbub" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
       <exported-key name="FK_kpfnivid38f5bwx3yl1lxeeae" table="post" schema="" catalog="Hubbub" columns="user_id"/>
       <exported-key name="FK_c1dkiawnlj6uoe6fnlwd6j83j" table="profile" schema="" catalog="Hubbub" columns="user_id"/>
       <exported-key name="FK_151ooxskkpn49blwsh7mjwysx" table="tag" schema="" catalog="Hubbub" columns="user_id"/>
       <exported-key name="FK_1hl85r166108l1vgkxycm3cq0" table="user_user" schema="" catalog="Hubbub" columns="user_following_id"/>
       <exported-key name="FK_s7pwk9swjfqs0w7ub9tt5s47y" table="user_user" schema="" catalog="Hubbub" columns="user_id"/>
       <index name="UK_6ntlp6n5ltjg6hhxl66jj5u0l" unique="true" columns="login_id"/>
+      <index name="FK_1mcjtpxmwom9h9bf2q0k412e0" unique="false" columns="profile_id"/>
     </table>
     <table name="user_user" schema="" catalog="Hubbub" type="TABLE">
       <column name="user_following_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>

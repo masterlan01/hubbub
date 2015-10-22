@@ -1,8 +1,11 @@
 package com.grailsinaction
 
 class Profile {
-    User user
+
+    static belongsTo = User
+
     byte[] photo
+
     String fullName
     String bio
     String homepage
@@ -10,18 +13,22 @@ class Profile {
     String timezone
     String country
     String jabberAddress
+    String skin
 
     static constraints = {
-        fullName blank: false
-        bio nullable: true, maxSize: 1000
-        homepage url: true, nullable: true
-        email email: true, blank: false
-        photo nullable: true, maxSize: 2 * 1024 * 1024
-        country nullable: true
-        timezone nullable: true
-        jabberAddress email: true, nullable: true
+        fullName(nullable: true)
+        bio(nullable: true, maxSize: 1000)
+        homepage(url: true, nullable: true)
+        email(email: true, nullable: true)
+        photo(nullable: true)
+        country(nullable: true)
+        timezone(nullable: true)
+        jabberAddress(email: true, nullable: true)
+        skin(nullable: true, inList: ['blues', 'nighttime', ''])
     }
-    String toString(){
-        "Профиль для ${fullName} (${id})"
+
+    String toString() {
+        "Profile for ${fullName} (${id})"
     }
+
 }

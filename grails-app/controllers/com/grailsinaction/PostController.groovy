@@ -1,30 +1,121 @@
 package com.grailsinaction
 
+import grails.converters.*
+
 class PostController {
 
-    static scaffold = true
-    def defaultAction = 'timeline'
+    def postService
+
+    def scaffold = true
+
+    static navigation = [
+        [group: 'tabs', action: 'personal', title: 'My Posts', order: 0],
+        [action:'timeline', title: 'My Timeline', order: 1],
+        [action: 'global', title: 'Everyone', order: 2],
+
+    ]
+
+    def index = {
+        redirect(action: 'timeline', params: params)
+    }
+
+    def global = {
+
+
+        def (posts, postCount) = postService.getGlobalTimelineAndCount(params)
+        [ posts : posts, postCount : postCount ]
+    }
 
     def timeline = {
-        def user = User.findById(params.id) // Отыскать пользователя по параметру id
-        [ user : user ]                     // Передать пользователя в представление
+
+
+        def user = User.get(session.user.id)
+        def (posts, postCount) = postService.getUserTimelineAndCount(user.userId, params)
+        [ user : user, posts : posts, postCount : postCount ]
     }
 
-    def addPost() {
-        def user = User.findById(params.id) // Отыскивает пользователя по значению id
-        if (user) {
-            def post = new Post(params)     // Запись данных в новый объект Post
-            user.addToPosts(post)           // Связывает новое сообщение с пользователем
-            if (user.save()) {              // save() вернет false, если проверка в объекте Post окончится неудачей
-                flash.message = "Successfully created Post!!! ${post.user.loginId}"
-                post.save()
-            } else {
-                user.discard()
-                flash.message = "Invalid or empty post"
-            }
-        } else {
-            flash.message = "Invalid User Id"
+    def personal = {
+
+        def user = params.id ? User.findByUserId(params.id) : session.user
+        if (!user) {
+            response.sendError(404)
         }
-        redirect(action: 'timeline', id: params.id) // Возвращает пользователя к списку сообщений
+        def (posts, postCount) = postService.getUserPosts(user.userId, params)
+        
+        [ user : user, posts : posts, postCount : postCount ]
     }
+
+    
+
+    def addPost = {
+        try {
+            def newPost = postService.createPost(session.user.userId, params.content)
+            flash.message = "Added new post: ${newPost.content}"
+        } catch (PostException pe) {
+            flash.message = pe.message
+        }
+        redirect(action: 'timeline', id: params.id)
+    }
+
+    def addPostAjax = {
+        try {
+            def newPost = postService.createPost(session.user.userId, params.content)
+            def posts
+            def postCount
+            switch(params.timelineToReturn) {
+                case "global":
+                    (posts, postCount) = postService.getGlobalTimelineAndCount(params)
+                    break
+                case "mytimeline":
+                    (posts, postCount) = postService.getUserTimelineAndCount(session.user.userId, params)
+                    break
+                case "myposts":
+                    (posts, postCount) = postService.getUserPosts(session.user.userId, params)
+                    break
+            }
+            println "postCount is ${postCount}"
+            render(template:"postentries", collection: posts, var: 'post')
+        } catch (PostException pe) {
+            render {
+                div(class:"errors", pe.message)
+            }
+        }
+
+    }
+
+    def tinyurl = {
+        def origUrl = params?.fullUrl?.encodeAsURL()
+        def tinyUrl = new URL("http://tinyurl.com/api-create.php?url=${origUrl}").text
+        render(contentType:"application/json") {
+            urls(small: tinyUrl, full: params.fullUrl)
+        }
+    }
+
+
+    def recentPosts = {
+
+        def user = User.findByUserId(params.id)
+        def posts = Post.findAllByUser(user, [max: 5])
+
+        withFormat {
+            js { 
+                render(contentType:"text/json") {
+                    hubbubPosts(user: user.userId) {
+                        posts.each { p ->
+                            post(contents: p.content,
+                                created:p.dateCreated)
+                        }
+                    }
+				
+                }
+            }
+            xml { render posts.encodeAsXML() }
+        }
+
+
+    }
+
+   
+
+
 }

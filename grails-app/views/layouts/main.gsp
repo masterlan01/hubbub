@@ -1,35 +1,31 @@
-<!DOCTYPE html>
-<!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
-<!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]-->
-<!--[if IE 8 ]>    <html lang="en" class="no-js ie8"> <![endif]-->
-<!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class="no-js"><!--<![endif]-->
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<title>Hubbub &raquo; <g:layoutTitle default="Welcome" /></title>
-		<link rel="stylesheet" href="<g:createLinkTo dir='css' file='hubbub.css'/>" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="shortcut icon" href="${assetPath(src: 'favicon.ico')}" type="image/x-icon">
-		<link rel="apple-touch-icon" href="${assetPath(src: 'apple-touch-icon.png')}">
-		<link rel="apple-touch-icon" sizes="114x114" href="${assetPath(src: 'apple-touch-icon-retina.png')}">
-  		<asset:stylesheet src="application.css"/>
-		<asset:javascript src="application.js"/>
-		<g:layoutHead/>
-	</head>
-	<body>
+<html>
+<head>
+    <title>Hubbub &raquo; <g:layoutTitle default="Welcome"/></title>
+    <nav:resources/>
+    <link rel="stylesheet" href="<g:createLinkTo dir='css' file='hubbub.css'/>"/>
+    <g:javascript library="application"/>
+    <g:javascript library="scriptaculous"/>
+    <g:layoutHead/>
+</head>
 
-	<div>
-		<div id="hd">
-			<g:link uri="/">
-				%{--<g:img id="logo" uri="./images/headerlogo.png" alt="hubbub logo"/>--}%
-				<g:img dir="images" file="headerlogo.png" alt="logo"/>
-			</g:link>
-		</div>
-		<div id="bd"><!-- start body -->
-		<g:layoutBody/>
+<body>
 
-		<div class="footer" role="contentinfo"></div>
-		<div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
-	</body>
+
+<div>
+    <div id="hd">
+        <a href="<g:createLinkTo dir="/"/>"><img id="logo" src="${createLinkTo(dir: 'images', file: 'headerlogo.png')}"
+                                                 alt="hubbub logo"/></a>
+    </div>
+
+    <div id="bd"><!-- start body -->
+    <nav:render group="tabs"/>
+    <g:layoutBody/>
+    </div>  <!-- end body -->
+    <div id="ft">
+        <div id="footerText">
+            Hubbub - Social Networking on Grails
+        </div>
+    </div>
+</div>
+</body>
 </html>

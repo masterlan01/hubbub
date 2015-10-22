@@ -10,6 +10,8 @@ hibernate {
     cache.region.factory_class = 'org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory' // Hibernate 4
     singleSession = true // configure OSIV singleSession mode
     flush.mode = 'manual' // OSIV session flush mode outside of transactional context
+    format_sql = true
+    use_sql_comments = true
 }
 
 // environment specific settings
@@ -19,7 +21,7 @@ environments {
             dbCreate = "update" // one of 'create', 'create-drop', 'update', 'validate', ''
             url = "jdbc:mysql://localhost/Hubbub?useUnicode=yes&characterEncoding=UTF-8"
             // Print Hibernate SQL to the console
-            logSql = true
+            //logSql = true
 
             // Credentials
             username = "master"

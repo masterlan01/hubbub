@@ -5,6 +5,8 @@
         <g:if test="${user.profile.skin}">
             <link rel="stylesheet" href="<g:createLinkTo dir='css' file='${user.profile.skin}.css'/>"/>
         </g:if>
+        <g:javascript library="prototype" />
+        <g:javascript library="jquery" />
     </head>
     <body>
 

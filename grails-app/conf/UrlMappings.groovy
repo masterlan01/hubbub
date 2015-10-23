@@ -10,10 +10,9 @@ class UrlMappings {
         "/"(view:"/index")
         "500"(view:'/error')
         "404"( controller: "errors", action: "notFound")
-        "/i" {
-            controller = "image"
-            action = "renderImage"
-            id = "1"
+        "/users/$userId/stats" {
+            controller = "user"
+            action = "stats"
         }
 
 	}

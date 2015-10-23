@@ -3,6 +3,7 @@ dataSource {
     driverClassName = "com.mysql.jdbc.Driver"
     dialect = "org.hibernate.dialect.MySQL5InnoDBDialect"
 }
+
 hibernate {
     cache.use_second_level_cache = true
     cache.use_query_cache = false
@@ -31,7 +32,11 @@ environments {
     test {
         dataSource {
             dbCreate = "update"
-            url = "jdbc:h2:mem:testDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE"
+//            url = "jdbc:h2:mem:testDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE"
+            url = "jdbc:mysql://localhost/Hubbub?useUnicode=yes&characterEncoding=UTF-8"
+            username = "master"
+            password = "memory"
+
         }
     }
     production {

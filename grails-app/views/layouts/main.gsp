@@ -10,7 +10,6 @@
 
 <body>
 
-
 <div>
     <div id="hd">
         <a href="<g:createLinkTo dir="/"/>"><img id="logo" src="${createLinkTo(dir: 'images', file: 'headerlogo.png')}"

@@ -10,7 +10,25 @@ class UserController {
         [action: 'register', order: 99, isVisible: { true }]
     ]
 
-
+    def stats = {
+        User user = User.findByUserId(params.userId)
+        if (user) {
+            def sdf = new java.text.SimpleDateFormat('E') //Преобразует дату
+            def postsOnDay = [:] //в день недели
+            user.posts.each { post ->
+                def dayOfWeek = sdf.format(post.dateCreated) //Преобразует дату
+                if (postsOnDay[dayOfWeek]) {    //сообщения в день недели
+                    postsOnDay[dayOfWeek]       //Отображает день недели и количество
+                } else {                        //сообщений, отправленных в этот день
+                    postsOnDay[dayOfWeek] = 1
+                }
+            }
+            return [ userId: params.userId, postsOnDay: postsOnDay ]
+        } else {
+            flash.message = "No stats available for that user"
+            redirect(uri: "/")
+        }
+    }
     def search = {
 
 	}

@@ -106,16 +106,9 @@ class PostController {
                                 created:p.dateCreated)
                         }
                     }
-				
-                }
+				}
             }
             xml { render posts.encodeAsXML() }
         }
-
-
     }
-
-   
-
-
 }

@@ -16,7 +16,7 @@ class PostService {
         if (user) {
             def post = new Post(content: content)
             user.addToPosts(post)
-            if (user.save()) {
+            if (user.save(flush: true)) {
                 return post
             } else {
                 throw new PostException(message: "Invalid or empty post", post: post)
